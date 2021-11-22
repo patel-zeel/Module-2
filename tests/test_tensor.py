@@ -57,8 +57,8 @@ def test_permute(data, t1):
 
 def test_grad_size():
     "Check that extra grad dim is removed (from @WannaFy)"
-    a = tensor([1], requires_grad=True)
-    b = tensor([[1, 1]], requires_grad=True)
+    a = tensor([2], requires_grad=True)
+    b = tensor([[3, 5]], requires_grad=True)
 
     c = (a * b).sum()
 

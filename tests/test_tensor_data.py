@@ -33,7 +33,7 @@ def test_layout():
 def test_layout_bad():
     "Test basis properties of layout and strides"
     data = [0] * 3 * 5
-    minitorch.TensorData(data, (3, 5), (6,))
+    minitorch.TensorData(data, (3, 5), (15,))
 
 
 @pytest.mark.task2_1

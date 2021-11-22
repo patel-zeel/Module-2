@@ -1,0 +1,6 @@
+minitorch/operators.py
+minitorch/module.py
+minitorch/autodiff.py
+minitorch/scalar.py
+project/run_manual.py
+project/run_scalar.py

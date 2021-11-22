@@ -190,7 +190,12 @@ class History:
         Returns:
             list of numbers : a derivative with respect to `inputs`
         """
-        raise NotImplementedError('Need to include this file from past assignment.')
+        # TODO: Implement for Task 1.4.
+        # raise NotImplementedError("Need to implement for Task 1.4")
+        if self.last_fn is None:
+            return d_output
+        else:
+            return self.last_fn.chain_rule(self.ctx, self.inputs, d_output)
 
 
 class FunctionBase:
@@ -272,7 +277,16 @@ class FunctionBase:
         """
         # Tip: Note when implementing this function that
         # cls.backward may return either a value or a tuple.
-        raise NotImplementedError('Need to include this file from past assignment.')
+        # TODO: Implement for Task 1.3.
+        # raise NotImplementedError('Need to implement for Task 1.3')
+        d_outputs = cls.backward(ctx, d_output)
+        if not isinstance(d_outputs, tuple):
+            d_outputs = (d_outputs,)
+        return [
+            (var, deriv)
+            for var, deriv in zip(inputs, d_outputs)
+            if not is_constant(var)
+        ]
 
 
 # Algorithms for backpropagation
@@ -282,18 +296,29 @@ def is_constant(val):
     return not isinstance(val, Variable) or val.history is None
 
 
-def topological_sort(variable):
-    """
-    Computes the topological order of the computation graph.
+# def topological_sort(variable):
+#     """
+#     Computes the topological order of the computation graph.
 
-    Args:
-        variable (:class:`Variable`): The right-most variable
+#     Args:
+#         variable (:class:`Variable`): The right-most variable
 
-    Returns:
-        list of Variables : Non-constant Variables in topological order
-                            starting from the right.
-    """
-    raise NotImplementedError('Need to include this file from past assignment.')
+#     Returns:
+#         list of Variables : Non-constant Variables in topological order
+#                             starting from the right.
+#     """
+#     # TODO: Implement for Task 1.4.
+#     # raise NotImplementedError("Need to implement for Task 1.4")
+#     if is_constant(variable):
+#         return []
+#     elif variable.is_leaf():
+#         return [variable]
+#     else:
+#         for input in variable.history.inputs:
+#             if is_constant(input):
+#                 continue
+#             else:
+#                 return [variable] + topological_sort(input)
 
 
 def backpropagate(variable, deriv):
@@ -309,4 +334,12 @@ def backpropagate(variable, deriv):
 
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
-    raise NotImplementedError('Need to include this file from past assignment.')
+    # TODO: Implement for Task 1.4.
+    # raise NotImplementedError("Need to implement for Task 1.4")
+    deriv = variable.expand(deriv)
+    if variable.is_leaf():
+        variable.accumulate_derivative(deriv)
+    else:
+        vars_and_derivs = variable.history.backprop_step(deriv)
+        for var, deriv in vars_and_derivs:
+            backpropagate(var, deriv)
